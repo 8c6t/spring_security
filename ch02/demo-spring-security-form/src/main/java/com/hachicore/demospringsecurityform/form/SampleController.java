@@ -1,6 +1,5 @@
 package com.hachicore.demospringsecurityform.form;
 
-import com.hachicore.demospringsecurityform.account.AccountContext;
 import com.hachicore.demospringsecurityform.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,7 +34,6 @@ public class SampleController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal) {
         model.addAttribute("message", "Hello " + principal.getName());
-        AccountContext.setAccount(accountRepository.findByUsername(principal.getName()));
         sampleService.dashboard();
         return "dashboard";
     }
