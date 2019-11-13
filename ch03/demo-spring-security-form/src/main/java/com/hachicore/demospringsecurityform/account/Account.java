@@ -23,6 +23,14 @@ public class Account {
 
     private String role;
 
+    public Account() { }
+
+    public Account(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
