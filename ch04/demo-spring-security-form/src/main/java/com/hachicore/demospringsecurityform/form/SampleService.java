@@ -2,6 +2,7 @@ package com.hachicore.demospringsecurityform.form;
 
 import com.hachicore.demospringsecurityform.common.SecurityLogger;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SampleService {
 
+//    @RolesAllowed("ROLE_USER")
+//    @PreAuthorize("hasRole('USER')")
+//    @PostAuthorize("hasRole('USER')")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public void dashboard() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
