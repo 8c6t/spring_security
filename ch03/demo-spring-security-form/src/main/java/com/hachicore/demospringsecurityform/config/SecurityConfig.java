@@ -40,15 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .expressionHandler(expressionHandler());
 
         http.formLogin()
-                .loginPage("/signin");
+                .loginPage("/login")
+                .permitAll();
 
         http.httpBasic();
         // http.csrf().disable();
 
-        http.logout().logoutSuccessUrl("/");
+        http.logout()
+                .logoutSuccessUrl("/");
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
-
 
 }
