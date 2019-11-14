@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
 @Configuration
@@ -49,18 +50,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
                 .logoutSuccessUrl("/");
 
-/*
-        http.sessionManagement()
-                .sessionFixation()
-                    .changeSessionId()
-//                .invalidSessionUrl("/login")
-                .maximumSessions(1)
-                    .maxSessionsPreventsLogin(true)
-        ;
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-*/
+        // TODO ExceptionTranslatorFilter -> FilterSecurityInterceptor (AccessDecisionManager, AffirmativeBased)
+        // TODO AuthenticationException -> AuthenticationEntryPoint
+        // TODO AccessDeniedException -> AccessDeniedHandler
+
+        http.exceptionHandling()
+                .accessDeniedHandler((req, res, ex) -> {
+                    UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    String username = principal.getUsername();
+                    System.out.println(username + " is denied to access " + req.getRequestURI());
+                    res.sendRedirect("/access-denied");
+                });
+                // .accessDeniedPage("/access-denied");
 
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
