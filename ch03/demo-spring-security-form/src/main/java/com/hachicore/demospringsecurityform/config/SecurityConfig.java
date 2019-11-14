@@ -1,5 +1,7 @@
 package com.hachicore.demospringsecurityform.config;
 
+import com.hachicore.demospringsecurityform.account.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
@@ -14,7 +16,10 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final AccountService accountService;
 
     public SecurityExpressionHandler expressionHandler() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -49,6 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .logoutSuccessUrl("/");
+
+        http.rememberMe()
+                .userDetailsService(accountService)
+                .key("remember-me-sample");
 
 
         // TODO ExceptionTranslatorFilter -> FilterSecurityInterceptor (AccessDecisionManager, AffirmativeBased)
