@@ -2,6 +2,7 @@ package com.hachicore.demospringsecurityform.form;
 
 import com.hachicore.demospringsecurityform.account.Account;
 import com.hachicore.demospringsecurityform.account.AccountRepository;
+import com.hachicore.demospringsecurityform.book.BookRepository;
 import com.hachicore.demospringsecurityform.common.CurrentUser;
 import com.hachicore.demospringsecurityform.common.SecurityLogger;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class SampleController {
 
     private final SampleService sampleService;
     private final AccountRepository accountRepository;
+    private final BookRepository bookRepository;
 
     @GetMapping("/")
     public String index(Model model, @CurrentUser Account account) {
@@ -51,6 +53,7 @@ public class SampleController {
     @GetMapping("/user")
     public String user(Model model, @CurrentUser Account account) {
         model.addAttribute("message", "Hello, User, " + account.getUsername());
+        model.addAttribute("books", bookRepository.findCurrentUserBooks());
         return "user";
     }
 

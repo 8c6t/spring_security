@@ -6,5 +6,8 @@
 </head>
 <body>
   <h1 th:text="${message}">Admin</h1>
+  <tr th:each="book : ${books}">
+    <td><span th:text="${book.getTitle()}">Title</span></td>
+  </tr>
 </body>
 </html>
